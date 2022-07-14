@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jianpu test 😂</title>
+  <style>
+    .debug {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+  <script src="js/Layout.js"></script>
+  <script src="js/Duration.js"></script>
+  <script src="js/Pitch.js"></script>
+  <script src="js/Note.js"></script>
+  <script src="js/Measure.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/jianpujs.js"></script>
+  <script>
+    var ms = new MeasurePart([
+      new Note(new Pitch(1, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(1, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(5, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(5, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(6, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(6, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(5, '', 0), new Duration(0, 0)),
+      new Note(new Pitch(4, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(4, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(3, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(3, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(2, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(2, '', 0), new Duration(1, 0)),
+      new Note(new Pitch(1, '', 0), new Duration(0, 0)),
+    ]);
+    var layout = new MeasurePartLayout(ms);
+    var svg = createSvg('svg', {viewBox: '0 0 200 100'});
+    svg.appendChild(layout.render());
+    //svg.style.width = '200px';
+    document.body.append(svg);
+  </script>
+</body>
+</html>
