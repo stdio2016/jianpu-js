@@ -20,3 +20,21 @@ class Duration {
             * (2 - Math.pow(0.5, this.dots));
     }
 }
+
+class DashLayout extends Layout {
+    constructor() {
+        super();
+        this.width = 8;
+        this.dx = this.width / 2;
+    }
+
+    render() {
+        return createSvg('line', {
+            x1: this.x + 1,
+            y1: this.y,
+            x2: this.getx2() - 1,
+            y2: this.gety2(),
+            stroke: 'black'
+        });
+    }
+}

@@ -13,7 +13,7 @@ class Note {
 class NoteLayout extends Layout {
     /**
      * 
-     * @param {Note} note 
+     * @param {Note} note
      */
     constructor(note) {
         super();
@@ -21,6 +21,10 @@ class NoteLayout extends Layout {
         this.pitchLayout = new PitchLayout(note.pitch);
         this.duration = this.note.duration;
         this.beamHeight = 0;
+        this.dashLayout = [];
+        for (var i = 0; i < this.note.duration.mul - 1; i++) {
+            this.dashLayout.push(new DashLayout());
+        }
         this.recalcSize();
     }
 
@@ -47,6 +51,11 @@ class NoteLayout extends Layout {
         if (this.duration.dots) {
             this.width += 4 * this.duration.dots + 2;
         }
+
+        // handle duration dashes
+        this.dashLayout.forEach(dash => {
+            dash.dy = this.pitchLayout.stepCy;
+        });
     }
 
     render() {
