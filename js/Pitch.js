@@ -95,7 +95,7 @@ class PitchLayout extends Layout {
             var accEl = createSvg('text', {
                 x: this.x + this.accWidth / 2,
                 textLength: this.accWidth,
-                y: this.getcy() - 10
+                y: this.getby() - 10
             });
             accEl.style.textAnchor = 'middle';
             accEl.style.fontSize = '12px';
@@ -108,7 +108,7 @@ class PitchLayout extends Layout {
             var y = this.y + this.stepY - 2;
             for (var i = 0; i < this.pitch.octave; i++) {
                 var elt = createSvg('circle', {
-                    cx: this.getcx(),
+                    cx: this.getbx(),
                     cy: y - i * 4,
                     r: 1.5
                 });
@@ -117,8 +117,8 @@ class PitchLayout extends Layout {
         }
 
         var stepEl = createSvg('text', {
-            x: this.getcx(),
-            y: this.getcy() - 3.5});
+            x: this.getbx(),
+            y: this.getby() - 3.5});
         stepEl.style.textAnchor = 'middle';
         stepEl.textContent = this.pitch.step;
         base.appendChild(stepEl);

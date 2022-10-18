@@ -36,7 +36,7 @@ class CellLayout extends Layout {
         var dy = this.layouts.reduce(
             (a, b) => Math.max(a, b.dy), 0);
         var bottom = this.layouts.reduce(
-            (a, b) => Math.max(a, b.getBottom()), 0);
+            (a, b) => Math.max(a, b.getdy2()), 0);
         this.height = dy + bottom;
         this.dy = dy;
     }
@@ -44,7 +44,7 @@ class CellLayout extends Layout {
     render() {
         var g = super.render();
         var x = this.x;
-        var y = this.getcy();
+        var y = this.getby();
         for (var lay of this.layouts) {
             lay.setPos(x, y - lay.dy);
             g.appendChild(lay.render());

@@ -16,15 +16,15 @@ class Layout {
         return this.y + this.height;
     }
 
-    getcx() {
+    getbx() {
         return this.x + this.dx;
     }
     
-    getcy() {
+    getby() {
         return this.y + this.dy;
     }
 
-    getBottom() {
+    getdy2() {
         return this.height - this.dy;
     }
 
@@ -50,16 +50,16 @@ class Layout {
         }));
         g.appendChild(createSvg('line', {
             x1: this.x,
-            y1: this.getcy(),
+            y1: this.getby(),
             x2: this.getx2(),
-            y2: this.getcy(),
+            y2: this.getby(),
             stroke: 'red',
             class: 'debug',
         }));
         g.appendChild(createSvg('line', {
-            x1: this.getcx(),
+            x1: this.getbx(),
             y1: this.y,
-            x2: this.getcx(),
+            x2: this.getbx(),
             y2: this.gety2(),
             stroke: 'red',
             class: 'debug',

@@ -65,7 +65,7 @@ class NoteLayout extends Layout {
         // handle duration beams
         if (this.duration.numBeams > 0) {
             for (var i = 0; i < this.duration.numBeams; i++) {
-                var y = this.getcy() + 3 * i;
+                var y = this.getby() + 3 * i;
                 var elt = createSvg('line', {
                     x1: this.x,
                     y1: y,
@@ -80,10 +80,10 @@ class NoteLayout extends Layout {
         // render lower octave dots
         if (this.note.pitch.octave < 0) {
             var oct = -this.note.pitch.octave;
-            var y = this.getcy() + this.beamHeight;
+            var y = this.getby() + this.beamHeight;
             for (var i = 0; i < oct; i++) {
                 var elt = createSvg('circle', {
-                    cx: this.getcx(),
+                    cx: this.getbx(),
                     cy: y + i * 4,
                     r: 1.5
                 });
