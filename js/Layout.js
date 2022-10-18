@@ -28,6 +28,13 @@ class Layout {
         return this.height - this.dy;
     }
 
+    getcx() {
+        return this.x + this.width / 2;
+    }
+    getcy() {
+        return this.y + this.height / 2;
+    }
+
     setPos(x, y) {
         this.x = x;
         this.y = y;

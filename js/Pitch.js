@@ -44,8 +44,7 @@ class PitchLayout extends Layout {
     constructor(pitch) {
         super();
         this.pitch = pitch;
-        this.stepY = 0;
-        this.stepCy = 0;
+        this.stepLayout = new StepLayout(pitch.step);
         this.accWidth = 0;
         this.octaveY = 0;
         this.recalcSize();
@@ -84,8 +83,13 @@ class PitchLayout extends Layout {
         }
     }
 
-    getStepCy() {
-        return this.y + this.stepY + this.stepCy;
+    setPos(x, y) {
+        var y0 = y;
+        if (this.pitch.octave > 0) {
+            y0 += this.pitch.octave * 4 + 2;
+        }
+        super.setPos(x, y);
+        this.stepLayout.setPos(x, y0);
     }
 
     render() {
@@ -116,12 +120,30 @@ class PitchLayout extends Layout {
             }
         }
 
-        var stepEl = createSvg('text', {
-            x: this.getbx(),
-            y: this.getby() - 3.5});
-        stepEl.style.textAnchor = 'middle';
-        stepEl.textContent = this.pitch.step;
-        base.appendChild(stepEl);
+        base.appendChild(this.stepLayout.render());
         return base;
+    }
+}
+
+class StepLayout extends Layout {
+    /**
+     * 
+     * @param {number} step 
+     */
+    constructor(step) {
+        super();
+        this.step = step;
+        this.width = 8;
+        this.height = 16;
+    }
+
+    render() {
+        var stepEl = createSvg('text', {
+            x: this.getcx(),
+            y: this.getcy()});
+        stepEl.style.textAnchor = 'middle';
+        stepEl.style.dominantBaseline = 'central';
+        stepEl.textContent = this.step;
+        return stepEl;
     }
 }

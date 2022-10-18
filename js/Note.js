@@ -97,7 +97,7 @@ class NoteLayout extends Layout {
         for (var d = 0; d < dots; d++) {
             var elt = createSvg('circle', {
                 cx: pitchLayout.getx2() + 4 * d + 3,
-                cy: pitchLayout.getStepCy(),
+                cy: pitchLayout.stepLayout.getcy(),
                 r: 1.5
             });
             fr.appendChild(elt);
