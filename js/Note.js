@@ -20,7 +20,7 @@ class NoteLayout extends Layout {
         this.note = note;
         this.pitchLayout = new PitchLayout(note.pitch);
         this.duration = this.note.duration;
-        this.beamHeight = 0;
+        this.beamLayout = new BeamLayout(note.duration.numBeams);
         this.dashLayout = [];
         for (var i = 0; i < this.note.duration.mul - 1; i++) {
             this.dashLayout.push(new DashLayout());
@@ -35,12 +35,7 @@ class NoteLayout extends Layout {
         this.dy = this.pitchLayout.dy;
 
         // handle duration beams
-        this.beamHeight = 0;
-        if (this.duration.numBeams > 0) {
-            var sp = this.duration.numBeams * 3;
-            this.beamHeight += sp;
-            this.height += sp;
-        }
+        this.height += this.beamLayout.height;
 
         // handle lower octave dots
         if (this.note.pitch.octave < 0) {
@@ -63,8 +58,8 @@ class NoteLayout extends Layout {
         fr.appendChild(this.pitchLayout.render());
         
         // handle duration beams
-        if (this.duration.numBeams > 0) {
-            for (var i = 0; i < this.duration.numBeams; i++) {
+        if (this.beamLayout.numBeams > 0) {
+            for (var i = 0; i < this.beamLayout.numBeams; i++) {
                 var y = this.getby() + 3 * i;
                 var elt = createSvg('line', {
                     x1: this.x,
@@ -80,7 +75,7 @@ class NoteLayout extends Layout {
         // render lower octave dots
         if (this.note.pitch.octave < 0) {
             var oct = -this.note.pitch.octave;
-            var y = this.getby() + this.beamHeight;
+            var y = this.getby() + this.beamLayout.height;
             for (var i = 0; i < oct; i++) {
                 var elt = createSvg('circle', {
                     cx: this.getbx(),

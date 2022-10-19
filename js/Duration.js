@@ -21,6 +21,23 @@ class Duration {
     }
 }
 
+class BeamLayout extends Layout {
+    constructor(numBeams) {
+        super();
+        this.numBeams = numBeams;
+        this.recalcSize();
+    }
+
+    recalcSize() {
+        // handle duration beams
+        this.height = 0;
+        if (this.numBeams > 0) {
+            var sp = this.numBeams * 3;
+            this.height += sp;
+        }
+    }
+}
+
 class DashLayout extends Layout {
     constructor() {
         super();
