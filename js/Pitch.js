@@ -55,8 +55,6 @@ class PitchLayout extends Layout {
         this.height = 16;
         this.dx = this.width / 2;
         this.dy = this.height;
-        this.stepY = 0;
-        this.stepCy = this.height * 0.5;
 
         this.accWidth = 0;
         if (this.pitch.accidental) {
@@ -66,16 +64,12 @@ class PitchLayout extends Layout {
             }
             this.width += this.accWidth - 1;
             this.dx += this.accWidth - 1;
-            this.stepY += 4;
-            this.dy += 4;
-            this.height += 4;
         }
 
         // handle higher octave
         if (this.pitch.octave > 0) {
-            this.octaveY = this.stepY - 2 - this.pitch.octave * 4;
+            this.octaveY = 0 - 2 - this.pitch.octave * 4;
             if (this.octaveY < 0) {
-                this.stepY -= this.octaveY;
                 this.dy -= this.octaveY;
                 this.height -= this.octaveY;
                 this.octaveY = 0;
@@ -89,7 +83,7 @@ class PitchLayout extends Layout {
             y0 += this.pitch.octave * 4 + 2;
         }
         super.setPos(x, y);
-        this.stepLayout.setPos(x, y0);
+        this.stepLayout.setPos(x + this.accWidth, y0);
     }
 
     render() {
@@ -109,7 +103,7 @@ class PitchLayout extends Layout {
 
         // render higher octave
         if (this.pitch.octave > 0) {
-            var y = this.y + this.stepY - 2;
+            var y = this.stepLayout.y - 2;
             for (var i = 0; i < this.pitch.octave; i++) {
                 var elt = createSvg('circle', {
                     cx: this.getbx(),

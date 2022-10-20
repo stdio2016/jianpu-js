@@ -49,7 +49,7 @@ class NoteLayout extends Layout {
 
         // handle duration dashes
         this.dashLayout.forEach(dash => {
-            dash.dy = this.pitchLayout.stepCy;
+            dash.dy = this.pitchLayout.stepLayout.getcy();
         });
     }
 
