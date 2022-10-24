@@ -45,7 +45,9 @@ class PitchLayout extends Layout {
         super();
         this.pitch = pitch;
         this.stepLayout = new StepLayout(pitch.step);
-        this.accWidth = 0;
+        if (pitch.accidental) {
+            this.accidentalLayout = new AccidentalLayout(pitch.accidental);
+        }
         this.octaveY = 0;
         this.recalcSize();
     }
@@ -56,14 +58,9 @@ class PitchLayout extends Layout {
         this.dx = this.width / 2;
         this.dy = this.height;
 
-        this.accWidth = 0;
-        if (this.pitch.accidental) {
-            this.accWidth = 6.5;
-            if (this.pitch.accidental === 'bb') {
-                this.accWidth = 9;
-            }
-            this.width += this.accWidth - 1;
-            this.dx += this.accWidth - 1;
+        if (this.accidentalLayout) {
+            this.width += this.accidentalLayout.width;
+            this.dx += this.accidentalLayout.width;
         }
 
         // handle higher octave
@@ -79,26 +76,23 @@ class PitchLayout extends Layout {
 
     setPos(x, y) {
         var y0 = y;
+        var x0 = x;
         if (this.pitch.octave > 0) {
             y0 += this.pitch.octave * 4 + 2;
         }
         super.setPos(x, y);
-        this.stepLayout.setPos(x + this.accWidth, y0);
+        if (this.accidentalLayout) {
+            this.accidentalLayout.setPos(x, y0);
+            x0 += this.accidentalLayout.width;
+        }
+        this.stepLayout.setPos(x0, y0);
     }
 
     render() {
         var base = super.render();
 
-        if (this.pitch.accidental) {
-            var accEl = createSvg('text', {
-                x: this.x + this.accWidth / 2,
-                textLength: this.accWidth,
-                y: this.getby() - 10
-            });
-            accEl.style.textAnchor = 'middle';
-            accEl.style.fontSize = '12px';
-            accEl.textContent = ACCIDENTAL_OUT_MAP[this.pitch.accidental];
-            base.appendChild(accEl);
+        if (this.accidentalLayout) {
+            base.appendChild(this.accidentalLayout.render());
         }
 
         // render higher octave
@@ -139,5 +133,42 @@ class StepLayout extends Layout {
         stepEl.style.dominantBaseline = 'central';
         stepEl.textContent = this.step;
         return stepEl;
+    }
+}
+
+class AccidentalLayout extends Layout {
+    /**
+     * 
+     * @param {string} accidental
+     */
+     constructor(accidental) {
+        super();
+        this.accidental = accidental;
+        this.width = 6.5;
+        if (accidental == 'bb') {
+            this.width = 10;
+        }
+        this.height = 16;
+        this.text = ACCIDENTAL_OUT_MAP[accidental];
+    }
+
+    render() {
+        var accEl = createSvg('text', {
+            x: this.getcx(),
+            y: this.getcy()
+        });
+        accEl.style.textAnchor = 'middle';
+        accEl.style.fontSize = '12px';
+        if (this.accidental == 'bb') {
+            var tspan = createSvg('tspan', {x: 3});
+            tspan.textContent = ACCIDENTAL_OUT_MAP.bb[0];
+            accEl.appendChild(tspan);
+            var tspan = createSvg('tspan', {x: 7.5});
+            tspan.textContent = ACCIDENTAL_OUT_MAP.bb[1];
+            accEl.appendChild(tspan);
+        } else {
+            accEl.textContent = this.text;
+        }
+        return accEl;
     }
 }
