@@ -10,7 +10,7 @@
       display: inline;
     }
     text {
-      font-family: Times;
+      font-family: sans-serif;
     }
   </style>
 </head>
@@ -47,9 +47,9 @@
       new Note(new Pitch(4, '', 1), new Duration(1, 0), [new Lyric('-vel')]),
     ]);
     var layout = new CellLayout(ms);
-    var svg = createSvg('svg', {viewBox: '0 0 400 100'});
+    var svg = createSvg('svg', {viewBox: '0 0 '+layout.width+' 100'});
     svg.appendChild(layout.render());
-    //svg.style.width = '200px';
+    svg.style.width = layout.width + 'px';
     document.body.append(svg);
 function toggleDebug() {
   var display = document.styleSheets[0].cssRules[0].style.display;
