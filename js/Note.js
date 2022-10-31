@@ -3,10 +3,16 @@ class Note {
      * Create a note
      * @param {Pitch} pitch
      * @param {Duration} duration
+     * @param {Lyric[]} lyrics
      */
-    constructor(pitch, duration) {
+    constructor(pitch, duration, lyrics) {
         this.pitch = pitch;
         this.duration = duration;
+        if (lyrics) {
+            this.lyrics = lyrics;
+        } else {
+            this.lyrics = [];
+        }
     }
 }
 
@@ -25,6 +31,11 @@ class NoteLayout extends Layout {
         for (var i = 0; i < this.note.duration.mul - 1; i++) {
             this.dashLayout.push(new DashLayout());
         }
+        this.lyricsLayout = note.lyrics.map(lyric => {
+            var layout = new TextLayout(lyric.text);
+            layout.dx = layout.width / 2;
+            return layout;
+        });
         this.recalcSize();
     }
 
@@ -51,6 +62,15 @@ class NoteLayout extends Layout {
         this.dashLayout.forEach(dash => {
             dash.dy = this.pitchLayout.stepLayout.getcy();
         });
+        
+        // handle lyrics
+        var left = this.dx, right = this.getdx2();
+        this.lyricsLayout.forEach(lyrics => {
+            left = Math.max(lyrics.dx, left);
+            right = Math.max(lyrics.getdx2(), right);
+        });
+        this.dx = left;
+        this.width = this.dx + right;
     }
 
     render() {
@@ -97,11 +117,17 @@ class NoteLayout extends Layout {
             });
             fr.appendChild(elt);
         }
+        for (var lyric of this.lyricsLayout) {
+            fr.appendChild(lyric.render());
+        }
         return fr;
     }
 
     setPos(x, y) {
         super.setPos(x, y);
-        this.pitchLayout.setPos(x, y);
+        this.pitchLayout.setPos(this.getbx()-this.pitchLayout.dx, y);
+        for (var lyric of this.lyricsLayout) {
+            lyric.setPos(this.getbx()-lyric.dx, y+this.dy+lyric.height);
+        }
     }
 }

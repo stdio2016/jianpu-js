@@ -24,6 +24,10 @@ class Layout {
         return this.y + this.dy;
     }
 
+    getdx2() {
+        return this.width - this.dx;
+    }
+
     getdy2() {
         return this.height - this.dy;
     }
