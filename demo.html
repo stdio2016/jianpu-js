@@ -28,25 +28,25 @@
   <script src="js/Lyrics.js"></script>
   <script src="js/Text.js"></script>
   <script>
-    // this is one way ticket
-    var ms = new Cell([
-      new Note(new Pitch(3, '', 0), new Duration(1, 0), [new Lyric('Choo')]),
-      new Note(new Pitch(6, '', 0), new Duration(1, 0)),
-      new Note(new Pitch(7, '', 0), new Duration(1, 0), [new Lyric('choo')]),
-      new Note(new Pitch(1, '', 1), new Duration(1, 0)),
-      new Note(new Pitch(7, '', 0), new Duration(0, 1), [new Lyric('train')]),
-      new Note(new Pitch(6, '', 0), new Duration(1, 0), [new Lyric('a')]),
-      new Note(new Pitch(3, '', 0), new Duration(1, 0), [new Lyric('chug-')]),
-      new Note(new Pitch(6, '', 0), new Duration(1, 0), [new Lyric("gin'")]),
-      new Note(new Pitch(7, '', 0), new Duration(1, 0), [new Lyric('down')]),
-      new Note(new Pitch(1, '', 1), new Duration(1, 0), [new Lyric('the')]),
-      new Note(new Pitch(7, '', 0), new Duration(0, 0, 2), [new Lyric('track')]),
-      new Note(new Pitch(6, '', 0), new Duration(1, 0), [new Lyric('Got-')]),
-      new Note(new Pitch(2, '', 1), new Duration(1, 0), [new Lyric('ta')]),
-      new Note(new Pitch(3, '', 1), new Duration(1, 0), [new Lyric('tra')]),
-      new Note(new Pitch(4, '', 1), new Duration(1, 0), [new Lyric('-vel')]),
+    var ms = new Measure([
+      new Cell([
+        new Note(new Pitch(1, '', 0), new Duration(1, 0), [new Lyric('這')]),
+        new Note(new Pitch(3, '', 0), new Duration(1, 0), [new Lyric('是')]),
+        new Note(new Pitch(5, '', 0), new Duration(1, 0), [new Lyric('一')]),
+        new Note(new Pitch(4, '', 0), new Duration(1, 0), [new Lyric('個')]),
+        new Note(new Pitch(1, '', 0), new Duration(1, 0), [new Lyric('測')]),
+        new Note(new Pitch(2, '', 0), new Duration(1, 0)),
+        new Note(new Pitch(3, '', 0), new Duration(0, 0), [new Lyric('試')]),
+      ]),
+      new Cell([
+        new Note(new Pitch(1, '', 0), new Duration(0, 0), [new Lyric('這')]),
+        new Note(new Pitch(2, '', 0), new Duration(0, 1), [new Lyric('是')]),
+        new Note(new Pitch(5, '', -1), new Duration(1, 0), [new Lyric('測')]),
+        new Note(new Pitch(1, '', 0), new Duration(0, 0), [new Lyric('試')]),
+      ]),
     ]);
-    var layout = new CellLayout(ms);
+    var layout = new MeasureLayout(ms);
+    layout.calcHeight();
     var svg = createSvg('svg', {viewBox: '0 0 '+layout.width+' 100'});
     svg.appendChild(layout.render());
     svg.style.width = layout.width + 'px';
