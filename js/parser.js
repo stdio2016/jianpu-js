@@ -22,23 +22,32 @@ class Parser {
         } else if (this.cur.startsWith('V')) {
             // TODO: multi voice/part
         } else {
-            this.parseJianpu();
+            var cells = this.parseJianpu();
+            console.log(cells);
         }
     }
 
     parseJianpu() {
         var n = this.cur.length;
+        var curCell = new Cell([]);
+        var cells = [curCell];
         while (this.pos < n) {
             var item = this.parseNote();
-            if (!item) {
-                item = this.parseBar();
-            }
             if (item) {
-                console.log(item);
-            } else {
-                this.pos++;
+                curCell.data.push(item);
+                continue;
             }
+            var bar = this.parseBar();
+            if (bar) {
+                curCell = new Cell([]);
+                cells.push(curCell);
+                continue;
+            }
+            this.pos++;
         }
+        // remove empty measure
+        cells = cells.filter(cell => cell.data.length > 0);
+        return cells;
     }
 
     parseNote() {
