@@ -57,8 +57,9 @@ class Parser {
             accidental = '';
             octave = 0;
         }
+        var pitch = new Pitch(step, accidental, octave);
         var duration = this.parseDuration();
-        return [accidental, step, octave, ...duration];
+        return new Note(pitch, duration, []);
     }
 
     parseAccidental() {
@@ -126,7 +127,7 @@ class Parser {
             dots++;
             this.pos++;
         }
-        return [numBeams, dots, mul];
+        return new Duration(numBeams, dots, mul);
     }
 
     parseBar() {
@@ -137,6 +138,42 @@ class Parser {
         }
         return null;
     }
+
+    parseLyrics() {
+        var len = this.cur.length;
+        var syllable = '';
+        var toks = [];
+        for (; this.pos < len; this.pos++) {
+            var ch = this.cur[this.pos];
+            if (/^[\s-]/.test(ch)) {
+                var type = 'end';
+                if (ch == '-') type = 'hyphen';
+                if (type != 'end' || syllable != '') {
+                    toks.push({syllable, type});
+                }
+                syllable = '';
+            } else if (ch == '*') {
+                if (syllable != '') {
+                    toks.push({syllable, type: 'end'});
+                }
+                syllable = '';
+                toks.push({syllable, type: 'end'});
+            } else if (ch == '_') {
+                if (syllable != '') {
+                    toks.push({syllable, type: 'end'});
+                }
+                syllable = '';
+                toks.push({syllable, type: 'continue'});
+            } else {
+                syllable += ch;
+            }
+        }
+        if (syllable != '') {
+            toks.push({syllable, type: 'end'});
+        }
+        return toks;
+    }
 }
 var p = new Parser();
-p.parse(`3321_.7,= | 7,_.1=-_.6,=-- | 6,6,_.7,=12_.1= | 7,--- |`);
+p.parse(`3321_.7,= | 7,_.1=-_.6,=-- | 6,6,_.7,=12_.1= | 7,--- |
+w: 音 樂 到 底 要 怎 麼* 寫* 我 什 麼 都 想 不 到`);

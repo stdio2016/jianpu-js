@@ -14,7 +14,7 @@ const ACCIDENTAL_OUT_MAP = {
 class Pitch {
     /**
      * Create a pitch for a Note
-     * @param {number} step
+     * @param {string} step
      *  an integer between 1 and 7 representing note name, or 0 
      *  representing rest note
      * @param {string} accidental
@@ -116,7 +116,7 @@ class PitchLayout extends Layout {
 class StepLayout extends Layout {
     /**
      * 
-     * @param {number} step 
+     * @param {string} step 
      */
     constructor(step) {
         super();
