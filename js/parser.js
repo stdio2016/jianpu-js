@@ -18,7 +18,7 @@ class Parser {
     parseLine() {
         if (this.cur.startsWith('w:')) {
             this.pos = 2;
-            this.parseLyrics();
+            var lyrics = this.parseLyrics();
         } else if (this.cur.startsWith('V')) {
             // TODO: multi voice/part
         } else {
@@ -141,37 +141,38 @@ class Parser {
 
     parseLyrics() {
         var len = this.cur.length;
-        var syllable = '';
-        var toks = [];
+        var text = '';
+        var lyrics = [];
         for (; this.pos < len; this.pos++) {
             var ch = this.cur[this.pos];
             if (/^[\s-]/.test(ch)) {
                 var type = 'end';
                 if (ch == '-') type = 'hyphen';
-                if (type != 'end' || syllable != '') {
-                    toks.push({syllable, type});
+                if (type != 'end' || text != '') {
+                    lyrics.push(new Lyric({text, type}));
                 }
-                syllable = '';
+                text = '';
             } else if (ch == '*') {
-                if (syllable != '') {
-                    toks.push({syllable, type: 'end'});
+                if (text != '') {
+                    lyrics.push(new Lyric({text, type: 'end'}));
                 }
-                syllable = '';
-                toks.push({syllable, type: 'end'});
+                text = '';
+                lyrics.push(new Lyric({text, type: 'end'}));
             } else if (ch == '_') {
-                if (syllable != '') {
-                    toks.push({syllable, type: 'end'});
+                if (text != '') {
+                    lyrics.push(new Lyric({text, type: 'end'}));
                 }
-                syllable = '';
-                toks.push({syllable, type: 'continue'});
+                text = '';
+                lyrics.push(new Lyric({text, type: 'continue'}));
             } else {
-                syllable += ch;
+                text += ch;
             }
         }
-        if (syllable != '') {
-            toks.push({syllable, type: 'end'});
+        if (text != '') {
+            lyrics.push(new Lyric({text, type: 'end'}));
         }
-        return toks;
+        console.log(lyrics);
+        return lyrics;
     }
 }
 var p = new Parser();
