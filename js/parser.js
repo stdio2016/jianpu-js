@@ -4,26 +4,40 @@ class Parser {
         this.cur = ''
         this.pos = 0
         this.line = 0
+        /**
+         * @type {Cell[]}
+         */
+        this.lastMeasures = []
+        /**
+         * @type {Cell[]}
+         */
+        this.measures = []
     }
 
     parse(code) {
         this.code = code.split('\n');
+        this.measures = [];
+        this.lastMeasures = [];
         for (var i = 0; i < this.code.length; i++) {
             this.line = i;
             this.cur = this.code[i];
             this.parseLine();
         }
+        return this.measures;
     }
 
     parseLine() {
         if (this.cur.startsWith('w:')) {
             this.pos = 2;
             var lyrics = this.parseLyrics();
+            this.alignLyrics(lyrics);
         } else if (this.cur.startsWith('V')) {
             // TODO: multi voice/part
         } else {
             var cells = this.parseJianpu();
+            this.lastMeasures = cells;
             console.log(cells);
+            this.measures.push(...cells);
         }
     }
 
@@ -183,7 +197,20 @@ class Parser {
         console.log(lyrics);
         return lyrics;
     }
+
+    /**
+     * 
+     * @param {Lyric[]} lyrics 
+     */
+    alignLyrics(lyrics) {
+        var i = 0;
+        for (var cell of this.lastMeasures) {
+            for (var note of cell.data) {
+                if (i < lyrics.length) {
+                    note.lyrics.push(lyrics[i]);
+                    i++;
+                }
+            }
+        }
+    }
 }
-var p = new Parser();
-p.parse(`3321_.7,= | 7,_.1=-_.6,=-- | 6,6,_.7,=12_.1= | 7,--- |
-w: 音 樂 到 底 要 怎 麼* 寫* 我 什 麼 都 想 不 到`);

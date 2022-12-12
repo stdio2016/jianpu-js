@@ -24,6 +24,7 @@ class CellLayout extends Layout {
                 this.layouts.push(...lay.dashLayout);
             }
         });
+        this.lyricsRows = 0;
         this.recalcSize();
     }
 
@@ -33,6 +34,12 @@ class CellLayout extends Layout {
 
     recalcSize() {
         this.width = this.layouts.reduce((a, b) => a + b.width, 0);
+        this.lyricsRows = 0;
+        for (var layout of this.layouts) {
+            if (layout.lyricsLayout) {
+                this.lyricsRows = Math.max(this.lyricsRows, layout.lyricsLayout.length);
+            }
+        }
         var dy = this.layouts.reduce(
             (a, b) => Math.max(a, b.dy), 0);
         var bottom = this.layouts.reduce(

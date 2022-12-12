@@ -29,26 +29,14 @@
   <script src="js/Text.js"></script>
   <script src="js/parser.js"></script>
   <script>
-    var ms = new Measure([
-      new Cell([
-        new Note(new Pitch(1, '', 0), new Duration(1, 0), [new Lyric('這')]),
-        new Note(new Pitch(3, '', 0), new Duration(1, 0), [new Lyric('是')]),
-        new Note(new Pitch(5, '', 0), new Duration(1, 0), [new Lyric('一')]),
-        new Note(new Pitch(4, '', 0), new Duration(1, 0), [new Lyric('個')]),
-        new Note(new Pitch(1, '', 0), new Duration(1, 0), [new Lyric('測')]),
-        new Note(new Pitch(2, '', 0), new Duration(1, 0)),
-        new Note(new Pitch(3, '', 0), new Duration(0, 0), [new Lyric('試')]),
-      ]),
-      new Cell([
-        new Note(new Pitch(1, '', 0), new Duration(0, 0), [new Lyric('這')]),
-        new Note(new Pitch(2, '', 0), new Duration(0, 1), [new Lyric('是')]),
-        new Note(new Pitch(5, '', -1), new Duration(1, 0), [new Lyric('測')]),
-        new Note(new Pitch(1, '', 0), new Duration(0, 0), [new Lyric('試')]),
-      ]),
-    ]);
+var parser = new Parser();
+var measures = parser.parse(`3321_.7,= | 7,_.1=-_.6,=-- | 6,6,_.7,=12_.1= | 7,--- |
+w: 音 樂 到 底 要 怎 麼* 寫* 我 什 麼 都 想 不 到`);
+
+    var ms = new Measure(measures);
     var layout = new MeasureLayout(ms);
     layout.calcHeight();
-    var svg = createSvg('svg', {viewBox: '0 0 '+layout.width+' 100'});
+    var svg = createSvg('svg', {viewBox: '0 0 '+layout.width+' 200'});
     svg.appendChild(layout.render());
     svg.style.width = layout.width + 'px';
     document.body.append(svg);

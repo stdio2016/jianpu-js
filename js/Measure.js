@@ -35,7 +35,7 @@ class MeasureLayout extends Layout {
         for (var cellLayout of this.cellLayouts) {
             cellLayout.setPos(x, y);
             g.appendChild(cellLayout.render());
-            y += cellLayout.height;
+            y += cellLayout.height + cellLayout.lyricsRows * 16;
         }
         return g;
     }
